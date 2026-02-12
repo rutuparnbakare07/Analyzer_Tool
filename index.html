@@ -53,10 +53,8 @@ button:hover{background:#3a5980}
 
   <div id="error" class="error"></div>
 </div>
-
 <script>
-/* 🔴 CHANGE THIS TO YOUR RENDER BACKEND URL */
-const API_URL = "https://YOUR_RENDER_BACKEND_URL";
+const API_URL = "https://YOUR_RENDER_BACKEND_URL"; // CHANGE THIS
 
 async function login(){
   const email = document.getElementById("email").value.trim();
@@ -65,33 +63,35 @@ async function login(){
 
   errorDiv.innerText = "";
 
-  if(!email || !password){
-    errorDiv.innerText = "Please enter email and password";
-    return;
-  }
+  console.log("Trying login...");
 
-  try{
-    const res = await fetch(`${API_URL}/login`, {
+  try {
+    const res = await fetch(API_URL + "/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     });
 
     const data = await res.json();
+    console.log("Response:", data);
 
-    if(!res.ok){
+    if (!res.ok) {
       errorDiv.innerText = data.detail || "Login failed";
       return;
     }
 
     localStorage.setItem("token", data.access_token);
+    console.log("Token saved");
+
     window.location.href = "epdTool.html";
 
-  } catch (err){
+  } catch (e) {
+    console.error(e);
     errorDiv.innerText = "Server not reachable";
   }
 }
 </script>
+
 
 </body>
 </html>
